@@ -1,8 +1,10 @@
 package com.ljubinkovicdj93.countdown.webSocket;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ljubinkovicdj93.countdown.model.HostGameClientMessage;
+import com.ljubinkovicdj93.countdown.model.HostGameServerMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.SubProtocolCapable;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -13,6 +15,7 @@ import java.util.List;
 
 public class CountdownWebSocketHandler extends TextWebSocketHandler implements SubProtocolCapable {
     private static final Logger logger = LoggerFactory.getLogger(CountdownWebSocketHandler.class);
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -22,7 +25,20 @@ public class CountdownWebSocketHandler extends TextWebSocketHandler implements S
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         logger.info("Received text message: {}", message.getPayload());
-        session.sendMessage(new TextMessage("Connected"));
+
+        try {
+            HostGameClientMessage hostGameClientMessage = objectMapper.readValue(message.getPayload(), HostGameClientMessage.class);
+
+            HostGameServerMessage hostGameServerMessage = new HostGameServerMessage("joinKeyRandom", "watchKeyRandom");
+            String jsonResponse = objectMapper.writeValueAsString(hostGameServerMessage);
+
+            session.sendMessage(new TextMessage(jsonResponse));
+        }
+        catch(Exception e) {
+            session.sendMessage(new TextMessage(e.getMessage()));
+        }
+
+
     }
 
     @Override
