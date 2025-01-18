@@ -1,8 +1,7 @@
 package com.ljubinkovicdj93.countdown.webSocket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ljubinkovicdj93.countdown.model.HostGameClientMessage;
-import com.ljubinkovicdj93.countdown.model.HostGameServerMessage;
+import com.ljubinkovicdj93.countdown.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.SubProtocolCapable;
@@ -27,18 +26,21 @@ public class CountdownWebSocketHandler extends TextWebSocketHandler implements S
         logger.info("Received text message: {}", message.getPayload());
 
         try {
-            HostGameClientMessage hostGameClientMessage = objectMapper.readValue(message.getPayload(), HostGameClientMessage.class);
+            AbstractPayload payload = objectMapper.readValue(message.getPayload(), PayloadWrapper.class).getPayload();
 
-            HostGameServerMessage hostGameServerMessage = new HostGameServerMessage("joinKeyRandom", "watchKeyRandom");
-            String jsonResponse = objectMapper.writeValueAsString(hostGameServerMessage);
-
-            session.sendMessage(new TextMessage(jsonResponse));
-        }
-        catch(Exception e) {
+            if (payload instanceof HostGamePayload) {
+                HostGameServerMessage hostGameServerMessage = new HostGameServerMessage("joinKeyRandom", "watchKeyRandom");
+                String jsonResponse = objectMapper.writeValueAsString(hostGameServerMessage);
+                session.sendMessage(new TextMessage(jsonResponse));
+            } else if (payload instanceof JoinGamePayload) {
+                // On JOIN_GAME, the currGame is always SubGame.LONGEST_WORD
+                JoinGameServerMessage joinGameServerMessage = new JoinGameServerMessage(SubGame.LONGEST_WORD);
+                String jsonResponse = objectMapper.writeValueAsString(joinGameServerMessage);
+                session.sendMessage(new TextMessage(jsonResponse));
+            }
+        } catch (Exception e) {
             session.sendMessage(new TextMessage(e.getMessage()));
         }
-
-
     }
 
     @Override
