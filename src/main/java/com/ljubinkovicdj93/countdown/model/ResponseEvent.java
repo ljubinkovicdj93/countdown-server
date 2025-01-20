@@ -6,6 +6,7 @@ package com.ljubinkovicdj93.countdown.model;
  *      <li>{@link #INIT}</li>
  *      <li>{@link #START}</li>
  *      <li>{@link #ABANDON}</li>
+ *      <li>{@link #WATCH}</li>
  *      <li>{@link #PLAY}</li>
  *      <li>{@link #WIN}</li>
  *      <li>{@link #WINNER}</li>
@@ -25,6 +26,10 @@ public enum ResponseEvent {
      * Game abandoned by a player.
      */
     ABANDON,
+    /**
+     * Spectator joined the game
+     */
+    WATCH,
     /**
      * A player played, ie: made a move.
      */
