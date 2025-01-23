@@ -2,7 +2,7 @@ package com.ljubinkovicdj93.countdown.model;
 
 import java.util.UUID;
 
-public final class HostGamePayload extends AbstractPayload {
+public final class HostGameGamePayload extends AbstractPayload {
     private UUID playerId;
 
     public UUID getPlayerId() {
@@ -13,3 +13,4 @@ public final class HostGamePayload extends AbstractPayload {
         this.playerId = playerId;
     }
 }
+

@@ -8,9 +8,11 @@ public class PayloadWrapper {
 
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "command", include = JsonTypeInfo.As.EXTERNAL_PROPERTY)
     @JsonSubTypes(value = {
-            @JsonSubTypes.Type(value = HostGamePayload.class, name = "HOST_GAME"),
-            @JsonSubTypes.Type(value = JoinGamePayload.class, name = "JOIN_GAME"),
-            @JsonSubTypes.Type(value = WatchGamePayload.class, name = "WATCH_GAME")
+            @JsonSubTypes.Type(value = HostGameGamePayload.class, name = "HOST_GAME"),
+            @JsonSubTypes.Type(value = JoinGameGamePayload.class, name = "JOIN_GAME"),
+            @JsonSubTypes.Type(value = WatchGameGamePayload.class, name = "WATCH_GAME"),
+            @JsonSubTypes.Type(value = LongestWordPayload.class, name = "LONGEST_WORD"),
+            @JsonSubTypes.Type(value = MyNumberPayload.class, name = "MY_NUMBER"),
     })
     private AbstractPayload payload;
 
@@ -30,3 +32,4 @@ public class PayloadWrapper {
         this.payload = payload;
     }
 }
+

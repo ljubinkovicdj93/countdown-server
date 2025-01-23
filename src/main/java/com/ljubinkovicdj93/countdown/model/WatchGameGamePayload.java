@@ -2,7 +2,7 @@ package com.ljubinkovicdj93.countdown.model;
 
 import java.util.UUID;
 
-public class WatchGamePayload extends AbstractPayload {
+public class WatchGameGamePayload extends AbstractPayload {
     private UUID playerId;
     private String watchKey;
 

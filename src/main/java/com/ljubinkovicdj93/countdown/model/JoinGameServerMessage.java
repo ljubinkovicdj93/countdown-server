@@ -25,3 +25,4 @@ public class JoinGameServerMessage {
         this.event = event;
     }
 }
+

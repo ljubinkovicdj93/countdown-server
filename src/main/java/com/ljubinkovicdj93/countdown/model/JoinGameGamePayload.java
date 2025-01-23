@@ -2,7 +2,7 @@ package com.ljubinkovicdj93.countdown.model;
 
 import java.util.UUID;
 
-public class JoinGamePayload extends AbstractPayload {
+public class JoinGameGamePayload extends AbstractPayload {
     private UUID playerId;
     private String joinKey;
 
